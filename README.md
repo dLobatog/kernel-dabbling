@@ -8,11 +8,17 @@ Welcome to my playground. Check out the subfolders for more info.
 
 ------------------
 
-## How to build teeny-linux (small-ish kernel)
+## How to build teeny-linux (small-ish kernel w/ busybox userland)
 
 Check out teeny-linux build.sh, it's a commented script.
 Notice linux/ itself is a git submodule of the torvalds kernel line, so it
 will take a while to run `git submodule init` (it's a large repo..)
+
+Make sure to read the script before building the kernel, it will ask you
+to complete sections of menuconfig manually. I could provide a .config
+file (like teeny-linux/smaller-config) but this is a learning exercise :)
+
+Notice you will need glibc-static to compile busybox statically.
 
 ## Glossary
 
@@ -42,6 +48,3 @@ This is the old format for small kernels (compressed, below 512KB). At boot, thi
 #### bzImage (make bzImage)
 
 The big zImage (this has nothing to do with bzip2), was created while the kernel grew and handles bigger images (compressed, over 512KB). The image gets loaded high in memory (above 1MB RAM). As today's kernels are way over 512KB, this is usually the preferred way.
-
-
-

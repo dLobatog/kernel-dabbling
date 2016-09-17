@@ -1,0 +1,2 @@
+#!/bin/sh
+echo Hi!! This is our custom kernel

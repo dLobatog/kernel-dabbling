@@ -1,0 +1,1 @@
+cmd_arch/x86/entry/syscalls/../../include/generated/asm/unistd_64_x32.h := /bin/sh '/home/daniel/workspace/kernel-dabbling/teeny-linux/linux/arch/x86/entry/syscalls/syscallhdr.sh' '/home/daniel/workspace/kernel-dabbling/teeny-linux/linux/arch/x86/entry/syscalls/syscall_64.tbl' 'arch/x86/entry/syscalls/../../include/generated/asm/unistd_64_x32.h' 'x32' 'x32_' ''

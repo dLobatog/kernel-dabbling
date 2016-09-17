@@ -15,20 +15,36 @@ cd $TL/initramfs/x86-busybox
 mkdir -pv {bin,sbin,etc,proc,sys,usr/{bin,sbin}}
 cp -av $TL/obj/busybox-x86/_install/* .
 touch init
-echo 'Hi!! This is our custom kernel' > init
+echo '#!/bin/sh
+
+mount -t proc none /proc
+mount -t sysfs none /sys
+exec /bin/sh
+' > init
+touch hellofriend
+echo '#!/bin/sh
+echo 'Hi!! This is our custom kernel'' > hellofriend
+chmod +x hellofriend
 chmod +x init
 find . -print0 \
   | cpio --null -ov --format=newc \
   | gzip -9 > $TL/obj/initramfs-busybox-x86.cpio.gz
 cd $TL/linux
-make O=../obj/linux-x86-basic x86_64_defconfig
-make O=../obj/linux-x86-basic kvmconfig
-make O=../obj/linux-x86-basic -j4 # again substitute 4 by your # of CPUs
+make O=../obj/linux-x86-alldefconfig alldefconfig
+make O=../obj/linux-x86-alldefconfig menuconfig
+# Enable at least 8250/16550 and compatible serial support
+# and Initial RAM filesystem and RAM disk (initramfs/initrd)
+# Use / to search for these options
+make O=../obj/linux-x86-alldefconfig kvmconfig
+make O=../obj/linux-x86-alldefconfig -j4 # again substitute 4 by your # of CPUs
 
 # We have a kernel and a userland now :)
 cd $TL
 # RUN IT!!!
 qemu-system-x86_64 \
-  -kernel obj/linux-x86-basic/arch/x86_64/boot/bzImage \
+  -kernel obj/linux-x86-alldefconfig/arch/x86_64/boot/bzImage \
   -initrd obj/initramfs-busybox-x86.cpio.gz \
-  -nographic -append "console=ttyS0" -enable-kvm # kernel options
+  -nographic -append "console=ttyS0" -enable-kvm
+# You can remove the last line of the qemu-system call and it will run on a
+# separate terminal. To close this kernel, Ctrl+a will open QEMU's cli, type
+# exit and return.
