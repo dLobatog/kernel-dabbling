@@ -1,0 +1,3 @@
+[submodule "teeny-linux/linux"]
+	path = teeny-linux/linux
+	url = git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
